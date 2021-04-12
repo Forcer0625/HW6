@@ -1,54 +1,68 @@
 public class HW06_4108056036_4 extends Dessert_Desert
 {
-	final static int[] min = new int[100000];
-	final static int[] max = new int[100000];
-	static int[] A;
-    static int arr_len,len;
+    final static int FindCore=5;
+	final static int[] min = new int[500000];
+	final static int[] max = new int[500000];
+    final static AnsFind[] FThread = new AnsFind[FindCore];
+    static int[][] arr;;
     static int[] ans;
     @Override
-    public int[] maxBlocks(int[][] arr)
+    public int[] maxBlocks(int[][] inputArr)
     {
-        arr_len=arr.length;
-        ans=new int[arr_len];
-        len=arr[0].length;
-        for(int i=arr_len;i>1;len=len<arr[--i].length?arr[i].length:len);
-        int[] max=new int[len];
-        int[] min=new int[len];
-        for(int i=arr_len-1;i>=0;i--)
+        arr=inputArr;
+        ans=new int[arr.length];
+        for(int i=FindCore-1;i>=0;i--)
+            (FThread[i]=new AnsFind(i)).start();
+        
+        try
         {
-            A=arr[i];
-            len=A.length;
-            int count=0;
-            max[0]=min[0]=A[0];
-            for(int j=1;j<len;j++)
+            for(int i=FindCore-1;i>=0;i--)
+                FThread[i].join();
+        }catch(InterruptedException e){}
+
+        return ans;
+    }
+    class AnsFind extends Thread
+    {
+        int id;
+        int[] A;
+        public AnsFind(int id)
+        {
+            this.id=id;
+        }
+        @Override
+        public void run()
+        {
+            for(int i=arr.length-1-id;i>=0;i-=FindCore)
             {
-                if(A[j]>=max[count])
+                A=arr[i];
+                int check=id;
+                int count=0;
+                min[check] = max[check] = A[0];
+                int len=A.length;
+                for(int j=1;j<len;j++)
                 {
-                    count++;
-                    max[count]=min[count]=A[j];
-                }
-                else if(A[j]<min[count])
-                {
-                    min[count]=A[j];
-                    for (int check=count-1;check>=0;check--)
+                    if(min[check] > A[j])
+                        min[check] = A[j];
+                    else if(max[check] <= A[j])
                     {
-                        if (A[j]>=max[check]) break;
-                        else if (A[j]>=min[check])
-                        {
-                            count--;
-                            max[check]=max[check+1];
-                            break;
-                        }else
-                        {
-                            count--;
-                            min[check]=A[j];
-                            max[check]=max[check+1];
-                        }
+                        check+=FindCore;
+                        min[check] = max[check] = A[j];
                     }
                 }
+                int cur_min = min[check];
+                for(check-=FindCore;check>=0;check-=FindCore)
+                {
+                    if(cur_min >= max[check])
+                    {
+                        count++;
+                        cur_min = min[check];
+                    }
+                    else if(cur_min > min[check])
+                        cur_min = min[check];
+                }
+                ans[i]=++count;
             }
-            ans[i]=++count;
         }
-        return ans;
     }
 }
