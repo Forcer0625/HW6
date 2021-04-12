@@ -1,7 +1,10 @@
 public class HW06_4108056036_4 extends Dessert_Desert
 {
+	final static int[] min = new int[100000];
+	final static int[] max = new int[100000];
+	static int[] A;
     static int arr_len,len;
-    static int[] A,ans,max,min;
+    static int[] ans;
     @Override
     public int[] maxBlocks(int[][] arr)
     {
