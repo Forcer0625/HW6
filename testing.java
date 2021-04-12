@@ -2,7 +2,7 @@ public class testing {
     final static int RUNNING_TIMES=100;
     public static void main(String[] args)
     {
-        Dessert_Desert t=new HW06_4108056036_5();
+        Dessert_Desert t=new HW06_4108056014_5();
         long sum=0;
         int[][] ex={
                     {1,1,1,1,1,1,1},//7
