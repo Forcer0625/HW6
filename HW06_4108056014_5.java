@@ -1,37 +1,42 @@
-
 public class HW06_4108056014_5 extends Dessert_Desert{
-	int[] min = new int[100000];
-	int[] max = new int[100000];
-	int[] ans;
-	int[] Arr;
-	int last,cur_min;
+	static int len,arr_len;
+	static int[] min = new int[100000];
+	static int[] max = new int[100000];
+	static int[] ans;
+	static int[] A;
 	@Override
-	public int[] maxBlocks(int[][] inputArr) {
+	public int[] maxBlocks(int[][] inputArr)
+	{
 		ans = new int[inputArr.length];
-		for(int i=0;i<inputArr.length;i++) {
-			Arr = inputArr[i];
-			last=0;
-			ans[i]=1;
-			min[last] = max[last] = Arr[0];
-			for(int j=1;j<Arr.length;j++) {
-				if(min[last] > Arr[j]) {
-					min[last] = Arr[j];
-				}
-				else if(max[last] <= Arr[j]) {
-					last++;
-					min[last] = max[last] = Arr[j];
-				}
-			}
-			cur_min = min[last];
-			for(int j=last-1;j>=0;j--) {
-				if(cur_min >= max[j]) {
-					ans[i]++;
-					cur_min = min[j];
-				}
-				else if(cur_min > min[j]) {
-					cur_min = min[j];
+		for(int i=inputArr.length-1;i>=0;i--)
+		{
+			A=inputArr[i];
+			int check=0;
+			int count=0;
+			min[check] = max[check] = A[0];
+			len=A.length;
+			for(int j=1;j<len;j++)
+			{
+				if(min[check] > A[j])
+					min[check] = A[j];
+				else if(max[check] <= A[j])
+				{
+					check++;
+					min[check] = max[check] = A[j];
 				}
 			}
+			int cur_min = min[check];
+			for(check--;check>=0;check--)
+			{
+				if(cur_min >= max[check])
+				{
+					count++;
+					cur_min = min[check];
+				}
+				else if(cur_min > min[check])
+					cur_min = min[check];
+			}
+			ans[i]=++count;
 		}
 		return ans;
 	}
