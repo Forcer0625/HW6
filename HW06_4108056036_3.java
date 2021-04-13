@@ -39,9 +39,10 @@ public class HW06_4108056036_3 extends Dessert_Desert
                     len=arr[i].length;
             int[] max=new int[len];
             int[] min=new int[len];
+            int[] A;
             for(int i=arr_len-1-id;i>=0;i-=FindCore)
             {
-                int[] A=arr[i];
+                A=arr[i];
                 int count=0;
                 max[0]=min[0]=A[0];
                 len=arr[i].length;
